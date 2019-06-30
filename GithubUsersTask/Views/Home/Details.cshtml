@@ -1,0 +1,61 @@
+﻿@model GithubUsersTask.Common.Models.GithubUser
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h3>User Details</h3>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Username: @Model.UserName</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-2">
+                <img alt="avatar" src="@Model.Avatar" height="120" width="120" />
+            </div>
+            <div class="col-xs-10">
+                Name: @Model.Name <br />
+                Location: @Model.Location
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Repositories != null)
+    {
+        var dummyModel = new GithubUsersTask.Common.Models.GithubUserRepo();
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => dummyModel.RepositoryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => dummyModel.Stars)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => dummyModel.Language)
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Repositories)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RepositoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stars)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Language)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+</div>
+
+<div>
+    @Html.ActionLink("Go back", "Index")
+</div>
