@@ -126,6 +126,35 @@ namespace GithubUsersTask.Tests.Services
         }
 
         [Fact]
+        public async Task GetUserAsync_Success_Handles_NullRepositories()
+        {
+            // Arrange
+            var username = "user";
+            var githubUserUrl = string.Format("https://api.github.com/users/{0}", username);
+            var githubUserRepoUrl = string.Format("https://api.github.com/users/{0}/repos", username);
+            var userResult = new GithubUser
+            {
+                UserName = username,
+                Name = "User",
+                RepoUrl = githubUserRepoUrl
+            };
+
+            var githubApiClientMock = new Mock<IGithubApiClient>(MockBehavior.Strict);
+            githubApiClientMock.Setup(client => client.GetAsync<GithubUser>(githubUserUrl)).ReturnsAsync(userResult);
+            githubApiClientMock.Setup(client => client.GetAsync<IEnumerable<GithubUserRepo>>(githubUserRepoUrl)).ReturnsAsync((IEnumerable<GithubUserRepo>)null);
+
+            GithubUsersService githubUsersService = new GithubUsersService(githubApiClientMock.Object);
+
+            // Act
+            GithubUser result = await githubUsersService.GetUserAsync(username);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(result.Repositories);
+            Assert.Empty(result.Repositories);
+        }
+
+        [Fact]
         public async Task GetUserAsync_Success_Returns_Null_WhenUserNotFound()
         {
             // Arrange

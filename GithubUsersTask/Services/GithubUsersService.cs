@@ -35,7 +35,7 @@ namespace GithubUsersTask.Services
             }
 
             // get user's repositories using repos_url
-            var userRepositories = await GetUserRepositoriesAsync(user.RepoUrl);
+            var userRepositories = await GetUserRepositoriesAsync(user.RepoUrl) ?? Enumerable.Empty<GithubUserRepo>();
 
             // filter top 5 starred repository
             user.Repositories = userRepositories.OrderByDescending(r => r.Stars).Take(5);
