@@ -23,7 +23,7 @@ namespace GithubUsersTask.Services
         /// Gets github user for given user name
         /// </summary>
         /// <param name="userName">github username for request</param>
-        /// <returns>returns github user and it's repository information</returns>
+        /// <returns>its repository information.</returns>
         public async Task<GithubUser> GetUserAsync(string userName)
         {
             var usersApiUrl = string.Format(GithubUserAPIUrl, userName);
