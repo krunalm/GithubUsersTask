@@ -83,17 +83,21 @@ $.extend( $.fn, {
 							.appendTo( validator.currentForm );
 					}
 
-					if ( validator.settings.submitHandler && !validator.settings.debug ) {
-						result = validator.settings.submitHandler.call( validator, validator.currentForm, event );
+					if ( validator.settings.submitHandler ) {
+						if ( !validator.settings.debug ) {
+							result = validator.settings.submitHandler.call( validator, validator.currentForm, event );
+						}
 						if ( hidden ) {
 
 							// And clean up afterwards; thanks to no-block-scope, hidden can be referenced
 							hidden.remove();
 						}
-						if ( result !== undefined ) {
-							return result;
+						if ( !validator.settings.debug ) {
+							if ( result !== undefined ) {
+								return result;
+							}
+							return false;
 						}
-						return false;
 					}
 					return true;
 				}
